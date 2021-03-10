@@ -1,0 +1,15 @@
+a {
+    text-decoration: none;
+    display: inline-block;
+    background-color: blue;
+    padding: 5px 10px;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+}
+a:hover{
+    background-color: lightblue;
+    color: black;
+}
