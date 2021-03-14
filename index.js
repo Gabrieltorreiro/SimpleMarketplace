@@ -3,17 +3,17 @@ const app = express();
 const path = require("path");
 const mysql = require('mysql');
 
-var connection = mysql.createConnection({
+var config = {
     host: 'localhost',
     port: 3306,
     user: 'admin',
     password: '123456',
     database: 'marketplace'
-});
+};
 
-connection.connect((err) => {
-    console.error(err, "mysql error");
-});
+var connection = mysql.createConnection(config);
+
+connection.connect();
 
 app.set("view engine", "ejs");
 
@@ -23,7 +23,13 @@ app.use(express.json());
 
 app.get('/product-list.html', (req, res) => {
     connection.query('SELECT * FROM product;', (err, products) => {
-        res.render('product-list',{products: products});
+        res.render('product-list', { products: products });
+    });
+});
+
+app.get('/product-detail.html', (req, res) => {
+    connection.query(`SELECT * FROM product WHERE id=${req.query.id};`, (err, product) => {
+        res.render('product-detail', { product: product[0] });
     });
 });
 
