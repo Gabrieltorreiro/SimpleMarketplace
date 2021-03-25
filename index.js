@@ -4,10 +4,6 @@ const session = require('express-session');
 const path = require("path");
 const connection = require('./config/db_mysql');
 
-// const connection = mysql.createConnection(config);
-
-// connection.connect();
-
 app.set("view engine", "ejs");
 
 app.use(session({
@@ -29,18 +25,22 @@ app.use('/login.html', loginRoute);
 
 app.get('/product-detail.html', (req, res) => {
     connection.query(`SELECT * FROM product WHERE id=${req.query.id};`, (err, product) => {
-        console.log(product);
-        res.render('product-detail', { product: product[0] });
+        res.render('product-detail', { product: product[0], user: req.session.name });
     });
 });
 
 app.get('/my-account.html', (req, res) => {
-    if (req.session.id) {
-        console.log("logado");
+    if (req.session.name) {
+        res.render('my-account', {user: req.session.name});
     } else {
-        console.log("not logado");
+        res.render('login', {user: req.session.name});
     }
-    res.render('my-account');
+});
+
+app.get('/logout',(req,res)=>{
+    req.session.destroy(()=>{
+        res.render('login', {user: undefined});
+    });
 });
 
 app.disable('x-powered-by');
