@@ -2,11 +2,13 @@ const express = require('express');
 const connection = require('../config/db_mysql');
 const router = express.Router();
 
+
+
 router.get('/', (req, res) => {
-    if(req.session.id){
-        res.render('my-account');
+    if(req.session.name){
+        res.render('my-account', {user: req.session.name});
     }else{
-        res.render('login');
+        res.render('login',{user: req.session.name});
     }
 });
 
@@ -18,10 +20,10 @@ router.post('/', (req, res) => {
 
         connection.query(query, (err, result) => {
             if (result.length != 0) {
-                req.session.id = result[0].id;
-                res.render('my-account');
+                req.session.name = result[0].name;
+                res.render('my-account', {user: req.session.name});
             } else {
-                res.render('login');
+                res.render('login', {user: req.session.name});
             }
         });
 
