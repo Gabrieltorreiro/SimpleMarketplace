@@ -19,27 +19,30 @@ app.use(express.json());
 const indexRoute = require('./routes/index');
 const listRoute = require('./routes/list');
 const loginRoute = require('./routes/login');
+const detailRoute = require('./routes/detail');
 app.use('/', indexRoute);
 app.use('/product-list.html', listRoute);
 app.use('/login.html', loginRoute);
-
-app.get('/product-detail.html', (req, res) => {
-    connection.query(`SELECT * FROM product WHERE id=${req.query.id};`, (err, product) => {
-        res.render('product-detail', { product: product[0], user: req.session.name });
-    });
-});
+app.use('/product-detail.html', detailRoute);
 
 app.get('/my-account.html', (req, res) => {
     if (req.session.name) {
-        res.render('my-account', {user: req.session.name});
+        res.render('my-account', { user: req.session.name });
     } else {
-        res.render('login', {user: req.session.name});
+        res.render('login', { user: req.session.name });
     }
 });
 
-app.get('/logout',(req,res)=>{
-    req.session.destroy(()=>{
-        res.render('login', {user: undefined});
+app.get('/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.render('login', { user: undefined });
+    });
+});
+
+app.get('/cart.html', (req, res) => {
+    res.render('cart', {
+        user: req.session.name,
+        cart: req.session.cart, cartQuantity: req.session.cart ? req.session.cart.length : 0
     });
 });
 
