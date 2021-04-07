@@ -4,8 +4,10 @@ const session = require('express-session');
 const path = require("path");
 const connection = require('./config/db_mysql');
 
+//Set view engine as ejs
 app.set("view engine", "ejs");
 
+//create session and set public route
 app.use(session({
     secret: 'secret',
     resave: false,
@@ -16,6 +18,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+//Create routes
 const indexRoute = require('./routes/index');
 const listRoute = require('./routes/list');
 const loginRoute = require('./routes/login');
@@ -42,7 +45,8 @@ app.get('/logout', (req, res) => {
 app.get('/cart.html', (req, res) => {
     res.render('cart', {
         user: req.session.name,
-        cart: req.session.cart, cartQuantity: req.session.cart ? req.session.cart.length : 0
+        cart: req.session.cart,
+        cartQuantity: req.session.cart ? req.session.cart.length : 0
     });
 });
 
