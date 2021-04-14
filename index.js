@@ -24,11 +24,13 @@ const listRoute = require('./routes/list');
 const loginRoute = require('./routes/login');
 const detailRoute = require('./routes/detail');
 const accountRoute = require('./routes/account');
+const cartRoute = require('./routes/cart');
 app.use('/', indexRoute);
 app.use('/product-list.html', listRoute);
 app.use('/login.html', loginRoute);
 app.use('/product-detail.html', detailRoute);
-app.use('/my-account.html', accountRoute);
+app.use('/my-account.html', accountRoute)
+app.use('/cart.html', cartRoute)
 
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
@@ -36,14 +38,7 @@ app.get('/logout', (req, res) => {
     });
 });
 
-app.get('/cart.html', (req, res) => {
-    res.render('cart', {
-        user: req.session.name,
-        cart: req.session.cart,
-        cartQuantity: req.session.cart ? req.session.cart.length : 0
-    });
-});
-
+//Disable x-powered-by
 app.disable('x-powered-by');
 
 app.listen(3000);
