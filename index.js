@@ -23,18 +23,12 @@ const indexRoute = require('./routes/index');
 const listRoute = require('./routes/list');
 const loginRoute = require('./routes/login');
 const detailRoute = require('./routes/detail');
+const accountRoute = require('./routes/account');
 app.use('/', indexRoute);
 app.use('/product-list.html', listRoute);
 app.use('/login.html', loginRoute);
 app.use('/product-detail.html', detailRoute);
-
-app.get('/my-account.html', (req, res) => {
-    if (req.session.name) {
-        res.render('my-account', { user: req.session.name });
-    } else {
-        res.render('login', { user: req.session.name });
-    }
-});
+app.use('/my-account.html', accountRoute);
 
 app.get('/logout', (req, res) => {
     req.session.destroy(() => {
